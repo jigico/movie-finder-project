@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>movie finder</title>
+  <link rel="stylesheet" href="/css/reset.css">
+  <link rel="stylesheet" href="/css/layout.css">
+</head>
+<body>
+  <div id="wrap">
+  </div>
+
+  <script>
+    //TMDB setting
+    const options = {
+      method: 'GET',
+      headers: {
+        accept: 'application/json',
+        Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjZTJlN2MxMjA1NThlYzFlZjk4YTgzYjE4ZjA0YTE1YiIsInN1YiI6IjY1OGUxYjg2ZDc1YmQ2MjIyNDcyOGM5ZCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.8T1FY_xAVBzlLeeTCdyAFRDUjg6efK13lnk2OZvapEE'
+      }
+    };
+    fetch('https://api.themoviedb.org/3/movie/top_rated?language=ko&page=1', options)
+      .then(response => response.json())
+      .then(response => {
+        const $wrap = document.querySelector('#wrap');
+
+        for(let i = 0; i < response.results.length; i++){
+          let movieBox = document.createElement('div');
+          movieBox.className = "item";
+          movieBox.innerHTML = `${response.results[i].title}`;
+          console.log(response.results[i].title);
+          $wrap.append(movieBox);
+        }
+      })
+      .catch(err => console.error(err));
+  </script>
+</body>
+</html>
