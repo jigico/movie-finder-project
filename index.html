@@ -16,7 +16,7 @@
       <div>
           <label for="keyord" class="sound-only">검색</label>
           <input type="text" id="keyword" class="search-input" placeholder="검색어를 입력해주세요.">
-          <button type="button" class="btn-search"><i class="xi-search"></i></button>
+          <button type="button" id="searchBtn" class="btn-search"><i class="xi-search"></i></button>
       </div>
     </header>
     <main>
@@ -41,7 +41,7 @@
     const imgPath = 'https://image.tmdb.org/t/p/w500';
 
     //영화 정보 가져오기
-    fetch('https://api.themoviedb.org/3/movie/top_rated?language=ko&page=1', options)
+    fetch('https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1', options) //ko
       .then(response => response.json())
       .then(response => {
         const $movieBox = document.querySelector('.movie-box');
@@ -64,12 +64,49 @@
 
     //검색
     let $keyword = document.querySelector('#keyword');
+    let $searchBtn = document.querySelector('#searchBtn');
     let searchKeyword = '';
+    $keyword.focus();
     $keyword.addEventListener('keyup', (event) => {
-      //입력 할 떄 마다 변수에 담기
+      //입력 할 때 마다 변수에 담기
       searchKeyword = event.currentTarget.value;
+
+      if(event.keyCode === 13){
+        console.log('엔터 눌렀어요');
+        showHideMovie();
+      }
     });
 
+    $searchBtn.addEventListener('click', () => {
+      if(!searchKeyword.trim()){
+        alert('검색어를 입력해주세요.');
+        $keyword.focus();
+        return;
+      }
+
+      showHideMovie();
+    });
+
+    //검색어와 관련없는 목록 숨기기
+    const showHideMovie = () => {
+      let $title = document.querySelector('.title');
+      let movie = document.querySelectorAll('.movie-title');
+      let keyword = searchKeyword.toLowerCase().split(" ").join("");
+      movie.forEach(function(el){
+        let movieTitle = el.innerText.toLowerCase().split(" ").join("");
+        let parent = el.parentElement;
+
+        if(movieTitle.includes(keyword)){
+          console.log(el.parentElement);
+          console.log(el, '포함!');
+          parent.style.display = 'block';
+        }else{
+          parent.style.display = 'none';
+        }
+      });
+
+      $title.innerText = '검색 결과 ✨';
+    };
 
     // fetch('https://api.themoviedb.org/3/search/movie?query=7인의&include_adult=false&language=ko&page=1', options)
     //   .then(response => response.json())
