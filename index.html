@@ -3,12 +3,28 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>movie finder</title>
+  <title>보고 싶은 영화를 찾아보세요!</title>
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-dynamic-subset.min.css" />
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
   <link rel="stylesheet" href="/css/reset.css">
   <link rel="stylesheet" href="/css/layout.css">
 </head>
 <body>
   <div id="wrap">
+    <header class="header">
+      <h1 class="logo"><a href="/">MOVIE FINDER</a></h1>
+      <div>
+          <label for="keyord" class="sound-only">검색</label>
+          <input type="text" id="keyword" class="search-input" placeholder="검색어를 입력해주세요.">
+          <button type="button" class="btn-search"><i class="xi-search"></i></button>
+      </div>
+    </header>
+    <main>
+      <div class="inner">
+        <h2 class="title">인기 영화 순위 ⚡</h2>
+        <div class="movie-box"></div>
+      </div>
+    </main>
   </div>
 
   <script>
@@ -20,20 +36,45 @@
         Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjZTJlN2MxMjA1NThlYzFlZjk4YTgzYjE4ZjA0YTE1YiIsInN1YiI6IjY1OGUxYjg2ZDc1YmQ2MjIyNDcyOGM5ZCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.8T1FY_xAVBzlLeeTCdyAFRDUjg6efK13lnk2OZvapEE'
       }
     };
+
+    //이미지 주소
+    const imgPath = 'https://image.tmdb.org/t/p/w500';
+
+    //영화 정보 가져오기
     fetch('https://api.themoviedb.org/3/movie/top_rated?language=ko&page=1', options)
       .then(response => response.json())
       .then(response => {
-        const $wrap = document.querySelector('#wrap');
-
+        const $movieBox = document.querySelector('.movie-box');
+        console.log(response)
         for(let i = 0; i < response.results.length; i++){
-          let movieBox = document.createElement('div');
-          movieBox.className = "item";
-          movieBox.innerHTML = `${response.results[i].title}`;
-          console.log(response.results[i].title);
-          $wrap.append(movieBox);
+          //영화 요소 생성
+          let movieItem = document.createElement('div');
+          let target = response.results[i];
+          movieItem.className = "item";
+          movieItem.innerHTML = `<div class="thumb-box"><img src="${imgPath + target.poster_path}"></div>
+            <span class="badge">${target.vote_average}</span>
+            <p class="movie-title">${target.title}</p>
+            <p class="overview">${target.overview}</p>
+          `;
+          
+          $movieBox.append(movieItem);
         }
       })
       .catch(err => console.error(err));
+
+    //검색
+    let $keyword = document.querySelector('#keyword');
+    let searchKeyword = '';
+    $keyword.addEventListener('keyup', (event) => {
+      //입력 할 떄 마다 변수에 담기
+      searchKeyword = event.currentTarget.value;
+    });
+
+
+    // fetch('https://api.themoviedb.org/3/search/movie?query=7인의&include_adult=false&language=ko&page=1', options)
+    //   .then(response => response.json())
+    //   .then(response => console.log(response))
+    //   .catch(err => console.error(err));
   </script>
 </body>
 </html>
