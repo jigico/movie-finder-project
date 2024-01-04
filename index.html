@@ -63,8 +63,8 @@
       .catch(err => console.error(err));
 
     //검색
-    let $keyword = document.querySelector('#keyword');
-    let $searchBtn = document.querySelector('#searchBtn');
+    const $keyword = document.querySelector('#keyword');
+    const $searchBtn = document.querySelector('#searchBtn');
     let searchKeyword = '';
     $keyword.focus();
     $keyword.addEventListener('keyup', (event) => {
@@ -89,7 +89,7 @@
 
     //검색어와 관련없는 목록 숨기기
     const showHideMovie = () => {
-      let $title = document.querySelector('.title');
+      const $title = document.querySelector('.title');
       let movie = document.querySelectorAll('.movie-title');
       let keyword = searchKeyword.toLowerCase().split(" ").join("");
       movie.forEach(function(el){
