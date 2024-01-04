@@ -17,6 +17,17 @@
 .thumb-box img{max-width: 100%;}
 .movie-title{margin-top: 10px;}
 .badge{padding:2px 8px; display: inline-block; border-radius: 20px; background: orange; color:#fff}
-.overview{line-height: 20px;}
+.overview{margin-top: 10px; line-height: 20px; color:#777}
 
-.sound-only{position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip-path: polygon(0 0, 0 0, 0 0,);}
+.sound-only{position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip-path: polygon(0 0, 0 0, 0 0);}
+
+@media all and (max-width:1280px) {
+  .movie-box{grid-template-columns: repeat(4, 1fr);}
+}
+
+@media all and (max-width:1024px) {
+  .movie-box{grid-template-columns: repeat(2, 1fr);}
+}
+
+@media all and (max-width:768px) {
+}
