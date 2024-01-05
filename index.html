@@ -46,19 +46,23 @@
     fetch('https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1', options) //ko
       .then(response => response.json())
       .then(response => {
-        for(let i = 0; i < response.results.length; i++){
+        // for(let i = 0; i < response.results.length; i++){
+        response.results.map((el, i) => {
           //영화 요소 생성
           let movieItem = document.createElement('div');
           let target = response.results[i];
+          // console.log(target);
           movieItem.className = "item";
           movieItem.innerHTML = `<div class="thumb-box"><img src="${imgPath + target.poster_path}" alt="${target.title} 포스터 이미지"></div>
+            <input type="hidden" value="${target.id}" class="target-id">
             <span class="badge">${target.vote_average}</span>
             <p class="movie-title">${target.title}</p>
             <p class="overview">${target.overview}</p>
           `;
           
           $movieBox.append(movieItem);
-        }
+        // }
+        });
       })
       .catch(err => console.error(err));
 
@@ -70,7 +74,6 @@
     $keyword.addEventListener('keyup', (event) => {
       //입력 할 때 마다 변수에 담기
       searchKeyword = event.currentTarget.value;
-      console.log(searchKeyword);
       //enter 키 눌렀을 때
       if(event.keyCode === 13){
         if(!searchKeyword.trim()){
@@ -90,7 +93,6 @@
         $keyword.focus();
         return;
       }
-      console.log(searchKeyword);
       showHideMovie();
     });
 
@@ -112,9 +114,11 @@
         }
       });
       
-      //일치하는 영화 없을 때
+      //일치하는 영화 없으면 no-data 노출
       if(cnt > 0){
-        document.querySelector('.no-data').remove();
+        if(document.querySelector('.no-data')){
+          document.querySelector('.no-data').remove();
+        }
       }else{
         if(!document.querySelector('.no-data')){
           const noDataDiv = document.createElement('div');
@@ -127,6 +131,17 @@
       //타이틀 변경
       $title.innerText = '검색 결과 ✨';
     };
+
+    let $item = $movieBox.getElementsByClassName('item');
+    $movieBox.addEventListener('click', (event) => {
+      console.log(event)
+      console.log(event.target.parentElement);
+      
+    });
+    // $item.addEventListener('click', (event) => {
+    //   console.log(22);
+    // });
+    // console.log($item);
 
     // fetch('https://api.themoviedb.org/3/search/movie?query=7인의&include_adult=false&language=ko&page=1', options)
     //   .then(response => response.json())
