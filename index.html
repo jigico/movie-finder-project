@@ -16,6 +16,7 @@
     />
     <link rel="stylesheet" href="./css/reset.css" />
     <link rel="stylesheet" href="./css/layout.css" />
+    <script type="module" src="./src/main.js"></script>
   </head>
   <body>
     <div id="wrap">
@@ -37,123 +38,9 @@
       <main>
         <div class="inner">
           <h2 class="title">인기 영화 순위 ⚡</h2>
-          <div class="movie-box"></div>
+          <ul class="movie-box"></ul>
         </div>
       </main>
     </div>
-
-    <script>
-      //TMDB setting
-      const options = {
-        method: "GET",
-        headers: {
-          accept: "application/json",
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjZTJlN2MxMjA1NThlYzFlZjk4YTgzYjE4ZjA0YTE1YiIsInN1YiI6IjY1OGUxYjg2ZDc1YmQ2MjIyNDcyOGM5ZCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.8T1FY_xAVBzlLeeTCdyAFRDUjg6efK13lnk2OZvapEE"
-        }
-      };
-
-      //이미지 주소
-      const imgPath = "https://image.tmdb.org/t/p/w500";
-      const $movieBox = document.querySelector(".movie-box");
-      const $title = document.querySelector(".title");
-
-      //영화 정보 가져오기
-      fetch(
-        "https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1",
-        options
-      ) //ko
-        .then((response) => response.json())
-        .then((response) => {
-          response.results.map((el, i) => {
-            //영화 요소 생성
-            let movieItem = document.createElement("div");
-            let target = response.results[i];
-            movieItem.className = "item";
-            movieItem.innerHTML = `<div class="thumb-box"><img src="${
-              imgPath + target.poster_path
-            }" alt="${target.title} 포스터 이미지"></div>
-            <input type="hidden" value="${target.id}" class="target-id">
-            <span class="badge">${target.vote_average}</span>
-            <p class="movie-title">${target.title}</p>
-            <p class="overview">${target.overview}</p>
-          `;
-
-            $movieBox.append(movieItem);
-
-            //이벤트 추가
-            movieItem.addEventListener("click", (event) => {
-              let id = event.currentTarget.querySelector(".target-id").value;
-              alert(`영화 아이디는 ${id} 입니다.`);
-            });
-          });
-        })
-        .catch((err) => console.error(err));
-
-      //검색 - keyup
-      const $keyword = document.querySelector("#keyword");
-      const $searchBtn = document.querySelector("#searchBtn");
-      let searchKeyword = "";
-      $keyword.focus();
-      $keyword.addEventListener("keyup", (event) => {
-        //입력 할 때 마다 변수에 담기
-        searchKeyword = event.currentTarget.value;
-        //enter 키 눌렀을 때
-        if (event.keyCode === 13) {
-          if (!searchKeyword.trim()) {
-            alert("검색어를 입력해주세요.");
-            $keyword.focus();
-            return;
-          }
-          showHideMovie();
-        }
-      });
-
-      //검색 - click
-      $searchBtn.addEventListener("click", () => {
-        if (!searchKeyword.trim()) {
-          alert("검색어를 입력해주세요.");
-          $keyword.focus();
-          return;
-        }
-        showHideMovie();
-      });
-
-      //검색어와 관련없는 목록 숨기기
-      const showHideMovie = () => {
-        const movieItem = document.querySelectorAll(".item");
-        const movie = document.querySelectorAll(".movie-title");
-        let keyword = searchKeyword.toLowerCase().split(" ").join("");
-        let cnt = 0;
-        movie.forEach(function (el) {
-          let movieTitle = el.innerText.toLowerCase().split(" ").join("");
-          let parent = el.parentElement;
-
-          if (movieTitle.includes(keyword)) {
-            parent.style.display = "block";
-            cnt += 1;
-          } else {
-            parent.style.display = "none";
-          }
-        });
-
-        //일치하는 영화 없으면 no-data 노출
-        if (cnt > 0) {
-          if (document.querySelector(".no-data")) {
-            document.querySelector(".no-data").remove();
-          }
-        } else {
-          if (!document.querySelector(".no-data")) {
-            const noDataDiv = document.createElement("div");
-            noDataDiv.className = "no-data";
-            noDataDiv.innerText = "검색 결과가 없습니다.";
-            $movieBox.append(noDataDiv);
-          }
-        }
-
-        //타이틀 변경
-        $title.innerText = "검색 결과 ✨";
-      };
-    </script>
   </body>
 </html>
