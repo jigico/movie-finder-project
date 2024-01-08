@@ -12,7 +12,7 @@
 .title{font-size: 30px; font-weight: bold;}
 
 /* movie */
-.movie-box{padding:25px 0; display: grid; grid-template-columns: repeat(5, 1fr); grid-row-gap: 25px; grid-column-gap: 25px;}
+.movie-box{padding:25px 0; display: grid; grid-template-columns: repeat(5, 1fr); grid-row-gap: 25px; grid-column-gap: 25px;cursor: pointer;}
 .thumb-box{margin-bottom: 5px; border-radius: 10px; overflow: hidden; text-align: center; border:1px solid #eee}
 .thumb-box img{display: block; max-width: 100%; transition: all .3s;}
 .thumb-box img:hover{transform: scale(1.1);}
