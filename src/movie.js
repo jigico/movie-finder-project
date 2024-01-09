@@ -18,7 +18,6 @@ async function fetchMovie() {
     options
   );
 
-  console.log(movie);
   const response = await movie.json();
 
   response.results.map((el, i) => {
@@ -37,12 +36,6 @@ async function fetchMovie() {
     `;
 
     $movieBox.append(movieItem);
-
-    //이벤트 추가
-    movieItem.addEventListener("click", (event) => {
-      let id = event.currentTarget.querySelector(".target-id").value;
-      alert(`영화 아이디는 ${id} 입니다.`);
-    });
   });
 }
 

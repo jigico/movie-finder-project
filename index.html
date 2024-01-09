@@ -22,7 +22,7 @@
     <div id="wrap">
       <header class="header">
         <h1 class="logo"><a href="/">MOVIE FINDER</a></h1>
-        <div>
+        <form id="search-form">
           <label for="keyord" class="sound-only">검색</label>
           <input
             type="text"
@@ -30,15 +30,15 @@
             class="search-input"
             placeholder="검색어를 입력해주세요."
           />
-          <button type="button" id="searchBtn" class="btn-search">
+          <button type="submit" id="searchBtn" class="btn-search">
             <i class="xi-search"></i>
           </button>
-        </div>
+        </form>
       </header>
       <main>
         <div class="inner">
           <h2 class="title">인기 영화 순위 ⚡</h2>
-          <ul class="movie-box"></ul>
+          <ul id="movieList" class="movie-box"></ul>
         </div>
       </main>
     </div>
