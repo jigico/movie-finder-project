@@ -4,28 +4,19 @@ import { showHideMovie } from "./search.js";
 fetchMovie();
 
 const $movieList = document.querySelector("#movieList");
-
-//검색 - keyup
+const $searchForm = document.querySelector("#searchForm");
 const $keyword = document.querySelector("#keyword");
-const $searchBtn = document.querySelector("#searchBtn");
 let searchKeyword = "";
+
 $keyword.focus();
+//검색 - keyup
 $keyword.addEventListener("keyup", (event) => {
   //입력 할 때 마다 변수에 담기
   searchKeyword = event.currentTarget.value;
-  //enter 키 눌렀을 때
-  if (event.keyCode === 13) {
-    if (!searchKeyword.trim()) {
-      alert("검색어를 입력해주세요.");
-      $keyword.focus();
-      return;
-    }
-    showHideMovie(searchKeyword);
-  }
 });
 
-//검색 - click
-$searchBtn.addEventListener("click", () => {
+$searchForm.addEventListener("submit", (event) => {
+  event.preventDefault();
   if (!searchKeyword.trim()) {
     alert("검색어를 입력해주세요.");
     $keyword.focus();
